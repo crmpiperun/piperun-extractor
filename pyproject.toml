@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.package-dir]
+piperun = "piperun"
+
+[tool.mypy]
+python_version = 3.11
+files = "piperun/"
+no_implicit_optional = true
+warn_return_any = true
+disallow_any_unimported = true
+check_untyped_defs = true
+show_error_codes = true
+warn_unused_ignores = true
+
+[project]
+name = "piperun-extractor"
+description = "PipeRun Extractor Tool/Lib"
+readme = "README.md"
+version = "1.0.0"
+authors = [
+    { name = "Tonin Bolzan", email = "tonin@crmpiperun.com" }
+]
+license = { text = "proprietary" }
+keywords = ["piperun"]
+classifiers = [
+    "Development Status :: 1 - Beta",
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3"
+]
+dependencies = [
+    "requests~=2.32",
+    "beautifulsoup4~=4.12",
+    "click~=8.1",
+    "pandas~=2.2",
+    "pyarrow~=19.0"
+]
+requires-python = ">=3.11, <4.0"
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "pytest-mypy",
+    "mypy",
+    "types-beautifulsoup4",
+    "types-requests",
+    "pandas-stubs"
+]
+
+[project.scripts]
+piperun-extractor = "piperun.cli:main"
