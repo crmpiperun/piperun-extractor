@@ -64,9 +64,9 @@ def write_itens(items: Iterator, extension: str, output_file: str) -> int:
 
 def execute_all(piperun: PipeRunExtractor, after: datetime, extension: str, output_dir: str) -> int:
     count = 0
-    for method in piperun.all(after=after):
+    for name, method in piperun.all(after=after):
         items = method()
-        output_file = os.path.join(output_dir, f"{method.__name__}.{extension}")
+        output_file = os.path.join(output_dir, f"{name}.{extension}")
         count += write_itens(items, extension, output_file)
 
     return count
