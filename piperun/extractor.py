@@ -170,7 +170,7 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.pipeline.Stage, 'stages', {'show': 200})  # full fetch
 
     def deals(self, after: datetime) -> Iterator[piperun.schema.deals.Deal]:
-        return self._fetch(piperun.schema.deals.Deal, 'deals', {'show': 100, 'with': 'customForms,tags', 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+        return self._fetch(piperun.schema.deals.Deal, 'deals', {'show': 100, 'with': 'tags', 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def deals_stage_histories(self, after: datetime) -> Iterator[piperun.schema.deals.StageHistory]:
         return self._fetch(piperun.schema.deals.StageHistory, 'stageHistories', {'show': 200, 'in_date_start': after.strftime('%Y-%m-%d %H:%M:%S')})
@@ -179,13 +179,13 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.deals.LostReason, 'lostReasons', {'show': 200})  # full fetch
 
     def companies(self, after: datetime) -> Iterator[piperun.schema.companies.Company]:
-        return self._fetch(piperun.schema.companies.Company, 'companies', {'show': 100, 'with': 'customForms', 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+        return self._fetch(piperun.schema.companies.Company, 'companies', {'show': 100, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def companies_segments(self, after: datetime) -> Iterator[piperun.schema.companies.Segment]:
         return self._fetch(piperun.schema.companies.Segment, 'segments', {'show': 200})  # full fetch
 
     def persons(self, after: datetime) -> Iterator[piperun.schema.person.Person]:
-        return self._fetch(piperun.schema.person.Person, 'persons', {'show': 100, 'with': 'customForms', 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+        return self._fetch(piperun.schema.person.Person, 'persons', {'show': 100, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def activities(self, after: datetime) -> Iterator[piperun.schema.activities.Activity]:
         return self._fetch(piperun.schema.activities.Activity, 'activities', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
