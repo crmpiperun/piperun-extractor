@@ -31,7 +31,6 @@ import piperun.schema.tags
 import piperun.schema.users
 from piperun import utils
 
-
 T = TypeVar('T')
 
 
