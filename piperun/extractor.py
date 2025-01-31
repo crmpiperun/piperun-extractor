@@ -73,6 +73,7 @@ class PipeRunExtractor:
         params['desc'] = 'false'
 
         cursor = ''
+        counter = 0
         while True:
             params['cursor'] = cursor
 
@@ -86,6 +87,9 @@ class PipeRunExtractor:
 
             if not data_items:
                 break
+
+            counter += len(data_items)
+            self.logger.info(f'Requesting {endpoint}: {counter}')
 
             for item in data_items:
                 yield schema_class(**item)
