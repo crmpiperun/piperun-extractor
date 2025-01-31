@@ -15,6 +15,16 @@ EXTENSION_PARQUET = 'parquet'
 EXTENSION_JSONL = 'jsonl'
 
 
+def validate_method(ctx: click.core.Context, param: click.core.Option, value: str):
+    """Validates the method parameter."""
+    value = unicodedata.normalize('NFKD', value or '').encode('ascii', 'ignore').decode('ascii').lower()
+
+    if not re.match(r"^[a-z_][a-z0-9_]*$", value):
+        raise click.BadParameter(f"Invalid character on method '{value}'")
+
+    return value
+
+
 def validate_token(ctx: click.core.Context, param: click.core.Option, value: str):
     """Validates that the input is a 32-character hexadecimal string."""
     if value and (len(value) != 32 or not all(c in '0123456789abcdefABCDEF' for c in value)):
@@ -22,12 +32,10 @@ def validate_token(ctx: click.core.Context, param: click.core.Option, value: str
     return value
 
 
-def validate_method(ctx: click.core.Context, param: click.core.Option, value: str):
-    """Validates the method parameter."""
-    value = unicodedata.normalize('NFKD', value or '').encode('ascii', 'ignore').decode('ascii').lower()
-
-    if not re.match(r"^[a-z_][a-z0-9_]*$", value):
-        raise click.BadParameter(f"Invalid character on method '{value}'")
+def validate_after(ctx: click.core.Context, param: click.core.Option, value: datetime):
+    """Validates that the input is greater than 2020-01-01."""
+    if value < datetime(2000, 1, 1):
+        raise click.BadParameter(f'{param.name} must be after 2020-01-01.')
 
     return value
 
@@ -74,6 +82,7 @@ def execute_one(piperun: PipeRunExtractor, method: str, after: datetime, extensi
               help='User Token')
 @click.option('-a', '--after', show_envvar=True, required=True,
               type=click.DateTime(['%Y-%m-%dT%H:%M:%S']),
+              callback=validate_after,
               help='Date to start filter')
 @click.option('-e', '--ext', show_envvar=True, required=True, default=EXTENSION_JSONL, show_default=True,
               type=click.Choice([EXTENSION_JSONL, EXTENSION_PARQUET]),
