@@ -67,8 +67,6 @@ class PipeRunExtractor:
         self.logger.addHandler(handler)
 
     def _fetch(self, schema_class: Type[T], endpoint: str, params: Dict[str, str | int]) -> Iterator:
-        endpoint = f'{self.base_url}/{endpoint}'
-
         # For performance reasons, do not change this defaults
         params['show'] = max(1, min(200, int(params.get('show', 10))))
         params['sort'] = 'id'
@@ -78,7 +76,7 @@ class PipeRunExtractor:
         while True:
             params['cursor'] = cursor
 
-            data = self._do_request(endpoint, params)
+            data = self._do_request(f'{self.base_url}/{endpoint}', params)
 
             data_items = data.get('data', [])
 
