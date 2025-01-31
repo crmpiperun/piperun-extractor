@@ -20,7 +20,6 @@ import piperun.schema.custom_forms
 import piperun.schema.data_lists
 import piperun.schema.deals
 import piperun.schema.emails
-import piperun.schema.goals
 import piperun.schema.items
 import piperun.schema.notes
 import piperun.schema.origins
@@ -246,9 +245,6 @@ class PipeRunExtractor:
 
     def cnaes(self, after: datetime) -> Iterator[piperun.schema.cnaes.Cnae]:
         return self._fetch(piperun.schema.cnaes.Cnae, 'cnaes', {'show': 200})  # full fetch
-
-    def goals(self, after: datetime) -> Iterator[piperun.schema.goals.Goal]:
-        return self._fetch(piperun.schema.goals.Goal, 'goals', {'show': 200, 'with': 'subGoals,entityAttribute.entity', 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def emails(self, after: datetime) -> Iterator[piperun.schema.emails.Email]:
         return self._fetch(piperun.schema.emails.Email, 'emails', {'show': 100, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
