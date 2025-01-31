@@ -41,7 +41,7 @@ class PipeRunExtractor:
                  token: str,
                  token_throttle: str = '',
                  origin: str = '',
-                 log_level: str = 'INFO',
+                 log_level: str = 'WARNING',
                  base_url: str = 'https://api.pipe.run/v1',
                  ):
         self.base_url = base_url.strip('/')
