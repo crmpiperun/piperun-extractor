@@ -4,13 +4,8 @@ Biblioteca Python 3.11+ para extração de dados dos endpoints do CRM PipeRun de
 
 ## Instalação
 A instalação desta biblioteca pode ser executada utilizando a ferramenta `pip` 21+
-### Método 1
 ```shell
-python3 -m pip install git+https://github.com/crmpiperun/piperun-extractor.git@1.0.0
-```
-### Método 2
-```shell
-python3 -m pip install https://github.com/crmpiperun/piperun-extractor/archive/stable/1.0.0.zip
+python3 -m pip install git+https://github.com/crmpiperun/piperun-extractor
 ```
 
 ## Uso como CLI

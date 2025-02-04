@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from piperun import utils
-from piperun.schema.custom_forms import CustomForm
 
 
 @dataclass
@@ -31,7 +30,6 @@ class Person:
     updated_at: datetime | None
     created_at: datetime | None
     is_lgpd_declaration_accepted: bool | None
-    customForms: list
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -58,4 +56,3 @@ class Person:
         self.updated_at = utils.parse_date(k, 'updated_at')
         self.created_at = utils.parse_date(k, 'created_at')
         self.is_lgpd_declaration_accepted = utils.parse_bool(k, 'lgpd_declaration_accepted')
-        self.customForms = utils.parse_list(k, 'customForms', CustomForm)

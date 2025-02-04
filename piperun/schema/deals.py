@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from piperun import utils
-from piperun.schema.custom_forms import CustomForm
 from piperun.schema.tags import Tag
 
 
@@ -44,7 +43,6 @@ class Deal:
     value_mrr: float | None
     created_at: datetime | None
     updated_at: datetime | None
-    customForms: list
     tags: list
 
     def __init__(self, **k):
@@ -84,7 +82,6 @@ class Deal:
         self.value_mrr = utils.parse_float(k, 'value_mrr')
         self.created_at = utils.parse_date(k, 'created_at')
         self.updated_at = utils.parse_date(k, 'updated_at')
-        self.customForms = utils.parse_list(k, 'customForms', CustomForm)
         self.tags = utils.parse_list(k, 'tags', Tag)
 
 

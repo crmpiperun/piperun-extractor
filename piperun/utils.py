@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Type, TypeVar
 from urllib.parse import urlparse
 
+import pandas
 from bs4 import BeautifulSoup, MarkupResemblesLocatorWarning
 
 T = TypeVar('T')
@@ -98,7 +99,8 @@ def parse_date(raw: dict, key: str) -> datetime | None:
 
     for date_format in date_formats:
         try:
-            return datetime.strptime(value, date_format)
+            date = datetime.strptime(value, date_format)
+            return date if pandas.Timestamp.min <= date <= pandas.Timestamp.max else None
         except ValueError:
             continue
 

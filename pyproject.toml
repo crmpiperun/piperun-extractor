@@ -22,7 +22,7 @@ warn_unused_ignores = true
 name = "piperun-extractor"
 description = "PipeRun Extractor Tool/Lib"
 readme = "README.md"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
     { name = "Tonin Bolzan", email = "tonin@crmpiperun.com" }
 ]
@@ -36,22 +36,24 @@ classifiers = [
     "Programming Language :: Python :: 3"
 ]
 dependencies = [
-    "requests~=2.32",
-    "beautifulsoup4~=4.12",
     "click~=8.1",
+    "beautifulsoup4~=4.12",
     "pandas~=2.2",
-    "pyarrow~=19.0"
+    "pyarrow~=19.0",
+    "requests~=2.32",
+    "tqdm~=4.67"
 ]
 requires-python = ">=3.11, <4.0"
 
 [project.optional-dependencies]
 dev = [
     "build",
-    "pytest-mypy",
     "mypy",
+    "pandas-stubs",
+    "pytest-mypy",
     "types-beautifulsoup4",
     "types-requests",
-    "pandas-stubs"
+    "types-tqdm"
 ]
 
 [project.scripts]

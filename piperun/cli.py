@@ -7,11 +7,22 @@ from typing import Iterator
 
 import click
 import pandas
+from tqdm import tqdm
 
 from piperun.extractor import PipeRunExtractor
 
 EXTENSION_PARQUET = 'parquet'
 EXTENSION_JSONL = 'jsonl'
+
+
+def validate_method(ctx: click.core.Context, param: click.core.Option, value: str):
+    """Validates the method parameter."""
+    value = unicodedata.normalize('NFKD', value or '').encode('ascii', 'ignore').decode('ascii').lower()
+
+    if not re.match(r"^[a-z_][a-z0-9_]*$", value):
+        raise click.BadParameter(f"Invalid character on method '{value}'")
+
+    return value
 
 
 def validate_token(ctx: click.core.Context, param: click.core.Option, value: str):
@@ -21,12 +32,10 @@ def validate_token(ctx: click.core.Context, param: click.core.Option, value: str
     return value
 
 
-def validate_method(ctx: click.core.Context, param: click.core.Option, value: str):
-    """Validates the method parameter."""
-    value = unicodedata.normalize('NFKD', value or '').encode('ascii', 'ignore').decode('ascii').lower()
-
-    if not re.match(r"^[a-z_][a-z0-9_]*$", value):
-        raise click.BadParameter(f"Invalid character on method '{value}'")
+def validate_after(ctx: click.core.Context, param: click.core.Option, value: datetime):
+    """Validates that the input is greater than 2020-01-01."""
+    if value < datetime(2000, 1, 1):
+        raise click.BadParameter(f'{param.name} must be after 2020-01-01.')
 
     return value
 
@@ -40,17 +49,10 @@ def assert_output(method: str, extension: str, output: str) -> None:
         raise click.BadParameter(f"--output '{output}' must be a file with the '{extension}' extension for the '{method}' method.")
 
 
+def write_itens(name: str, items: Iterator, extension: str, output_file: str) -> None:
+    items_wrapper = tqdm(items, desc='Requesting', unit=f' {name}')
 
-def write_itens(items: Iterator, extension: str, output_file: str) -> int:
-    count = 0
-
-    def wrapper() -> Iterator:
-        nonlocal count
-        for item in items:
-            count += 1
-            yield item
-
-    df = pandas.DataFrame(wrapper())
+    df = pandas.DataFrame(items_wrapper)
 
     if extension == EXTENSION_JSONL:
         df.to_json(output_file, orient='records', lines=True)
@@ -59,23 +61,18 @@ def write_itens(items: Iterator, extension: str, output_file: str) -> int:
     else:
         raise NotImplementedError
 
-    return count
 
-
-def execute_all(piperun: PipeRunExtractor, after: datetime, extension: str, output_dir: str) -> int:
-    count = 0
-    for method in piperun.all(after=after):
+def execute_all(piperun: PipeRunExtractor, after: datetime, extension: str, output_dir: str) -> None:
+    for name, method in piperun.all(after=after):
         items = method()
-        output_file = os.path.join(output_dir, f"{method.__name__}.{extension}")
-        count += write_itens(items, extension, output_file)
-
-    return count
+        output_file = os.path.join(output_dir, f"{name}.{extension}")
+        write_itens(name, items, extension, output_file)
 
 
-def execute_one(piperun: PipeRunExtractor, method: str, after: datetime, extension: str, output_file: str) -> int:
+def execute_one(piperun: PipeRunExtractor, method: str, after: datetime, extension: str, output_file: str) -> None:
     method_attr = getattr(piperun, method)
     items = method_attr(after=after)
-    return write_itens(items, extension, output_file)
+    write_itens(method, items, extension, output_file)
 
 
 @click.command()
@@ -85,6 +82,7 @@ def execute_one(piperun: PipeRunExtractor, method: str, after: datetime, extensi
               help='User Token')
 @click.option('-a', '--after', show_envvar=True, required=True,
               type=click.DateTime(['%Y-%m-%dT%H:%M:%S']),
+              callback=validate_after,
               help='Date to start filter')
 @click.option('-e', '--ext', show_envvar=True, required=True, default=EXTENSION_JSONL, show_default=True,
               type=click.Choice([EXTENSION_JSONL, EXTENSION_PARQUET]),
@@ -117,18 +115,12 @@ def main(token, throttle, log, origin, url, after, ext, output, method: str):
     if method.startswith('_') or not hasattr(piperun, method):
         raise click.BadParameter(f"method must be one of: {', '.join([name for name, _ in piperun.all(after)])}")
 
-    start_time = datetime.now()
-
     if method == 'all':
-        count = execute_all(piperun, after, ext, output)
+        execute_all(piperun, after, ext, output)
     elif callable(getattr(piperun, method)):
-        count = execute_one(piperun, method, after, ext, output)
+        execute_one(piperun, method, after, ext, output)
     else:
         raise click.BadParameter('Invalid method')
-
-    elapsed_time = datetime.now() - start_time
-
-    click.echo(f"{count} {method} in {elapsed_time} = {(elapsed_time.seconds / (count / 100))}")
 
 
 if __name__ == '__main__':

@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from piperun import utils
-from piperun.schema.custom_forms import CustomForm
 
 
 @dataclass
@@ -55,7 +54,6 @@ class Company:
     is_distributor: bool | None
     is_manufacturer: bool | None
     is_partner: bool | None
-    customForms: list
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -106,7 +104,6 @@ class Company:
         self.is_distributor = utils.parse_bool(k, 'is_distributor')
         self.is_manufacturer = utils.parse_bool(k, 'is_manufacturer')
         self.is_partner = utils.parse_bool(k, 'is_partner')
-        self.customForms = utils.parse_list(k, 'customForms', CustomForm)
 
 
 @dataclass
