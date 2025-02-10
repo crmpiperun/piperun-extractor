@@ -35,7 +35,7 @@ T = TypeVar('T')
 
 
 class PipeRunExtractor:
-    VERSION = '1.0.1'
+    VERSION = '1.0.2'
 
     def __init__(self,
                  token: str,
@@ -155,19 +155,19 @@ class PipeRunExtractor:
         return methods
 
     def users(self, after: datetime) -> Iterator[piperun.schema.users.User]:
-        return self._fetch(piperun.schema.users.User, 'users', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.users.User, 'users', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def users_teams(self, after: datetime) -> Iterator[piperun.schema.users.Team]:
-        return self._fetch(piperun.schema.users.Team, 'teams', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.users.Team, 'teams', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def users_team_groups(self, after: datetime) -> Iterator[piperun.schema.users.TeamGroup]:
         return self._fetch(piperun.schema.users.TeamGroup, 'teamGroup', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def pipelines(self, after: datetime) -> Iterator[piperun.schema.pipeline.Pipeline]:
-        return self._fetch(piperun.schema.pipeline.Pipeline, 'pipelines', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.pipeline.Pipeline, 'pipelines', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def pipelines_stages(self, after: datetime) -> Iterator[piperun.schema.pipeline.Stage]:
-        return self._fetch(piperun.schema.pipeline.Stage, 'stages', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.pipeline.Stage, 'stages', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def deals(self, after: datetime) -> Iterator[piperun.schema.deals.Deal]:
         return self._fetch(piperun.schema.deals.Deal, 'deals', {'show': 100, 'with': 'tags', 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
@@ -176,13 +176,13 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.deals.StageHistory, 'stageHistories', {'show': 200, 'in_date_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def deals_lost_reasons(self, after: datetime) -> Iterator[piperun.schema.deals.LostReason]:
-        return self._fetch(piperun.schema.deals.LostReason, 'lostReasons', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.deals.LostReason, 'lostReasons', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def companies(self, after: datetime) -> Iterator[piperun.schema.companies.Company]:
         return self._fetch(piperun.schema.companies.Company, 'companies', {'show': 100, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def companies_segments(self, after: datetime) -> Iterator[piperun.schema.companies.Segment]:
-        return self._fetch(piperun.schema.companies.Segment, 'segments', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.companies.Segment, 'segments', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def persons(self, after: datetime) -> Iterator[piperun.schema.person.Person]:
         return self._fetch(piperun.schema.person.Person, 'persons', {'show': 100, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
@@ -191,19 +191,19 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.activities.Activity, 'activities', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def activities_types(self, after: datetime) -> Iterator[piperun.schema.activities.ActivityType]:
-        return self._fetch(piperun.schema.activities.ActivityType, 'activityTypes', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.activities.ActivityType, 'activityTypes', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def proposals(self, after: datetime) -> Iterator[piperun.schema.proposals.Proposal]:
         return self._fetch(piperun.schema.proposals.Proposal, 'proposals', {'show': 100, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def proposal_model(self, after: datetime) -> Iterator[piperun.schema.proposals.ProposalModel]:
-        return self._fetch(piperun.schema.proposals.ProposalModel, 'proposals/models', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.proposals.ProposalModel, 'proposals/models', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def proposal_layout(self, after: datetime) -> Iterator[piperun.schema.proposals.ProposalLayout]:
         return self._fetch(piperun.schema.proposals.ProposalLayout, 'proposals/layouts', {'show': 200})  # full fetch
 
     def proposals_payment_methods(self, after: datetime) -> Iterator[piperun.schema.proposals.PaymentMethod]:
-        return self._fetch(piperun.schema.proposals.PaymentMethod, 'paymentMethods', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.proposals.PaymentMethod, 'paymentMethods', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def proposals_payment_methods_types(self, after: datetime) -> Iterator[piperun.schema.proposals.PaymentMethodsType]:
         return self._fetch(piperun.schema.proposals.PaymentMethodsType, 'paymentMethodTypes', {'show': 200})  # full fetch
@@ -218,7 +218,7 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.calls.Call, 'calls', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def custom_fields(self, after: datetime) -> Iterator[piperun.schema.custom_forms.CustomFieldResponse]:
-        return self._fetch(piperun.schema.custom_forms.CustomFieldResponse, 'customFields', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.custom_forms.CustomFieldResponse, 'customFields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def custom_forms(self, after: datetime) -> Iterator[piperun.schema.custom_forms.CustomForm]:
         return self._fetch(piperun.schema.custom_forms.CustomForm, 'customForms', {'show': 200, 'with': 'fields'})  # full fetch
@@ -227,13 +227,13 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.notes.Note, 'notes', {'show': 100, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def items(self, after: datetime) -> Iterator[piperun.schema.items.Item]:
-        return self._fetch(piperun.schema.items.Item, 'items', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.items.Item, 'items', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def items_characteristics(self, after: datetime) -> Iterator[piperun.schema.items.Characteristic]:
         return self._fetch(piperun.schema.items.Characteristic, 'items/characteristics', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def items_categories(self, after: datetime) -> Iterator[piperun.schema.items.Category]:
-        return self._fetch(piperun.schema.items.Category, 'itemCategories', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.items.Category, 'itemCategories', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def items_measurement_units(self, after: datetime) -> Iterator[piperun.schema.items.MeasurementUnit]:
         return self._fetch(piperun.schema.items.MeasurementUnit, 'measurementUnit', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
@@ -242,7 +242,7 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.data_lists.DataList, 'datalists', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def tags(self, after: datetime) -> Iterator[piperun.schema.tags.Tag]:
-        return self._fetch(piperun.schema.tags.Tag, 'tags', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.tags.Tag, 'tags', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def cnaes(self, after: datetime) -> Iterator[piperun.schema.cnaes.Cnae]:
         return self._fetch(piperun.schema.cnaes.Cnae, 'cnaes', {'show': 200})  # full fetch
@@ -251,7 +251,7 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.emails.Email, 'emails', {'show': 100, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def emails_templates(self, after: datetime) -> Iterator[piperun.schema.emails.EmailTemplate]:
-        return self._fetch(piperun.schema.emails.EmailTemplate, 'email/templates', {'show': 200})
+        return self._fetch(piperun.schema.emails.EmailTemplate, 'email/templates', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def origins(self, after: datetime) -> Iterator[piperun.schema.origins.Origin]:
         return self._fetch(piperun.schema.origins.Origin, 'origins', {'show': 200})  # full fetch
@@ -260,4 +260,4 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.origins.OriginGroup, 'originGroups', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def regions(self, after: datetime) -> Iterator[piperun.schema.regions.Region]:
-        return self._fetch(piperun.schema.regions.Region, 'regions', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.regions.Region, 'regions', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
