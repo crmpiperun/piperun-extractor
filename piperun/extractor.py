@@ -29,13 +29,14 @@ import piperun.schema.proposals
 import piperun.schema.regions
 import piperun.schema.tags
 import piperun.schema.users
+import piperun.schema.custom_fields
 from piperun import utils
 
 T = TypeVar('T')
 
 
 class PipeRunExtractor:
-    VERSION = '1.0.2'
+    VERSION = '1.0.3'
 
     def __init__(self,
                  token: str,
@@ -66,6 +67,12 @@ class PipeRunExtractor:
         handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
         self.logger.addHandler(handler)
 
+    def _except_cursor(self, endpoint: str) -> bool:
+        except_endpoints = ('companies/custom-fields', 'persons/custom-fields', 'deals/custom-fields')
+        if endpoint in except_endpoints:
+            return True
+        return False
+
     def _fetch(self, schema_class: Type[T], endpoint: str, params: Dict[str, str | int]) -> Iterator:
         # For performance reasons, do not change this defaults
         params['show'] = max(1, min(200, int(params.get('show', 10))))
@@ -73,9 +80,14 @@ class PipeRunExtractor:
         params['desc'] = 'false'
 
         cursor = ''
+        page = 1
         counter = 0
+        except_cursor = self._except_cursor(endpoint)
         while True:
-            params['cursor'] = cursor
+            if except_cursor:
+                params['page'] = page
+            else:
+                params['cursor'] = cursor
 
             data = self._do_request(f'{self.base_url}/{endpoint}', params)
 
@@ -94,9 +106,16 @@ class PipeRunExtractor:
             for item in data_items:
                 yield schema_class(**item)
 
-            cursor = data.get('meta', {}).get('cursor', {}).get('next')
-            if not cursor:
-                break
+            if except_cursor:
+                next_page_url = data.get('meta', {}).get('links', {}).get('next')
+                if next_page_url:
+                    page = next_page_url.split("page=")[1]
+                else:
+                    break
+            else:
+                cursor = data.get('meta', {}).get('cursor', {}).get('next')
+                if not cursor:
+                    break
 
     def _do_request(self, endpoint: str, params: Dict[str, str | int]) -> Any:
         attempt = 0
@@ -261,3 +280,13 @@ class PipeRunExtractor:
 
     def regions(self, after: datetime) -> Iterator[piperun.schema.regions.Region]:
         return self._fetch(piperun.schema.regions.Region, 'regions', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+
+    def deals_has_custom_fields(self,  after: datetime) -> Iterator[piperun.schema.custom_fields.EntityHasCustomField]:
+        return self._fetch(piperun.schema.custom_fields.EntityHasCustomField, 'deals/custom-fields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+
+    def companies_has_custom_fields(self,  after: datetime) -> Iterator[piperun.schema.custom_fields.EntityHasCustomField]:
+        return self._fetch(piperun.schema.custom_fields.EntityHasCustomField, 'companies/custom-fields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+
+    def persons_has_custom_fields(self,  after: datetime) -> Iterator[piperun.schema.custom_fields.EntityHasCustomField]:
+        return self._fetch(piperun.schema.custom_fields.EntityHasCustomField, 'persons/custom-fields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+
