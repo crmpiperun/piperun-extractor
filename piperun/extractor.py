@@ -236,8 +236,8 @@ class PipeRunExtractor:
     def calls(self, after: datetime) -> Iterator[piperun.schema.calls.Call]:
         return self._fetch(piperun.schema.calls.Call, 'calls', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
-    def custom_fields(self, after: datetime) -> Iterator[piperun.schema.custom_forms.CustomFieldResponse]:
-        return self._fetch(piperun.schema.custom_forms.CustomFieldResponse, 'customFields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+    def custom_fields(self, after: datetime) -> Iterator[piperun.schema.custom_fields.CustomFieldResponse]:
+        return self._fetch(piperun.schema.custom_fields.CustomFieldResponse, 'customFields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def custom_forms(self, after: datetime) -> Iterator[piperun.schema.custom_forms.CustomForm]:
         return self._fetch(piperun.schema.custom_forms.CustomForm, 'customForms', {'show': 200, 'with': 'fields'})  # full fetch
