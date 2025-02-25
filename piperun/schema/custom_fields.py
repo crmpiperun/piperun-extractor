@@ -43,6 +43,7 @@ class CustomFieldResponse:
 
 @dataclass
 class EntityHasCustomField:
+    id: int | None
     person_id: int | None
     company_id: int | None
     deal_id: int | None
@@ -52,6 +53,7 @@ class EntityHasCustomField:
     updated_at: datetime | None
 
     def __init__(self, **k):
+        self.id = utils.parse_int(k, 'id')
         self.person_id = utils.parse_int(k, 'person_id')
         self.company_id = utils.parse_int(k, 'company_id')
         self.deal_id = utils.parse_int(k, 'deal_id')
