@@ -29,13 +29,14 @@ import piperun.schema.proposals
 import piperun.schema.regions
 import piperun.schema.tags
 import piperun.schema.users
+import piperun.schema.custom_fields
 from piperun import utils
 
 T = TypeVar('T')
 
 
 class PipeRunExtractor:
-    VERSION = '1.0.2'
+    VERSION = '1.0.3'
 
     def __init__(self,
                  token: str,
@@ -217,8 +218,8 @@ class PipeRunExtractor:
     def calls(self, after: datetime) -> Iterator[piperun.schema.calls.Call]:
         return self._fetch(piperun.schema.calls.Call, 'calls', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
-    def custom_fields(self, after: datetime) -> Iterator[piperun.schema.custom_forms.CustomFieldResponse]:
-        return self._fetch(piperun.schema.custom_forms.CustomFieldResponse, 'customFields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+    def custom_fields(self, after: datetime) -> Iterator[piperun.schema.custom_fields.CustomFieldResponse]:
+        return self._fetch(piperun.schema.custom_fields.CustomFieldResponse, 'customFields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def custom_forms(self, after: datetime) -> Iterator[piperun.schema.custom_forms.CustomForm]:
         return self._fetch(piperun.schema.custom_forms.CustomForm, 'customForms', {'show': 200, 'with': 'fields'})  # full fetch
@@ -261,3 +262,13 @@ class PipeRunExtractor:
 
     def regions(self, after: datetime) -> Iterator[piperun.schema.regions.Region]:
         return self._fetch(piperun.schema.regions.Region, 'regions', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+
+    def deals_has_custom_fields(self,  after: datetime) -> Iterator[piperun.schema.custom_fields.EntityHasCustomField]:
+        return self._fetch(piperun.schema.custom_fields.EntityHasCustomField, 'deals/custom-fields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+
+    def companies_has_custom_fields(self,  after: datetime) -> Iterator[piperun.schema.custom_fields.EntityHasCustomField]:
+        return self._fetch(piperun.schema.custom_fields.EntityHasCustomField, 'companies/custom-fields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+
+    def persons_has_custom_fields(self,  after: datetime) -> Iterator[piperun.schema.custom_fields.EntityHasCustomField]:
+        return self._fetch(piperun.schema.custom_fields.EntityHasCustomField, 'persons/custom-fields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+
