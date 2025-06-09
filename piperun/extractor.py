@@ -36,7 +36,7 @@ T = TypeVar('T')
 
 
 class PipeRunExtractor:
-    VERSION = '1.0.3'
+    VERSION = '1.0.4'
 
     def __init__(self,
                  token: str,
@@ -102,16 +102,21 @@ class PipeRunExtractor:
     def _do_request(self, endpoint: str, params: Dict[str, str | int]) -> Any:
         attempt = 0
         retry_after = 5  # 5,25,125 seconds
+        default_retry = retry_after  # default value start
         while attempt < 3:
             attempt += 1
+            has_retry_header = False
 
             code = 0
             try:
                 self.logger.debug(f'Requesting {endpoint} with params {params}')
                 response = requests.get(endpoint, params=params, headers=self.headers, timeout=60, verify=True)
                 code = response.status_code
-                retry_after = max(retry_after, int(response.headers.get('Retry-After', retry_after)))
-
+                
+                if 'Retry-After' in response.headers:
+                    has_retry_header = True
+                    retry_after = max(retry_after, int(response.headers.get('Retry-After', retry_after)))
+    
                 if 200 <= code < 300:
                     return response.json()
             except RequestException as e:
@@ -135,8 +140,11 @@ class PipeRunExtractor:
                 self.logger.error(f'Request failed with status code {code}. Retrying in {retry_after} seconds.')
                 # if error is unknown, timeout, 5xx or 4xx: reduce the number of items to retrieve
                 params['show'] = max(1, min(200, math.ceil(int(params.get('show', 1)) / 2)))  # Cut show in half every error
-
-            time.sleep(retry_after ** attempt)  # Exponential backoff
+    
+            if has_retry_header:
+                time.sleep(retry_after)  # Use Retry-After value directly
+            else:
+                time.sleep(default_retry ** attempt)  # Exponential backoff
 
         self.logger.error(f'Abort: Request failed after {attempt} attempts.')
         raise Exception(f'Request failed after {attempt} attempts.')
