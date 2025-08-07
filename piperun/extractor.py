@@ -230,7 +230,7 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.custom_fields.CustomFieldResponse, 'customFields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def custom_forms(self, after: datetime) -> Iterator[piperun.schema.custom_forms.CustomForm]:
-        return self._fetch(piperun.schema.custom_forms.CustomForm, 'customForms', {'show': 200, 'with': 'fields'})  # full fetch
+        return self._fetch(piperun.schema.custom_forms.CustomForm, 'customForms', {'show': 200, 'with': 'fields', 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})  # full fetch
 
     def notes(self, after: datetime) -> Iterator[piperun.schema.notes.Note]:
         return self._fetch(piperun.schema.notes.Note, 'notes', {'show': 100, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
@@ -263,7 +263,7 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.emails.EmailTemplate, 'email/templates', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def origins(self, after: datetime) -> Iterator[piperun.schema.origins.Origin]:
-        return self._fetch(piperun.schema.origins.Origin, 'origins', {'show': 200})  # full fetch
+        return self._fetch(piperun.schema.origins.Origin, 'origins', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})  # full fetch
 
     def origins_groups(self, after: datetime) -> Iterator[piperun.schema.origins.OriginGroup]:
         return self._fetch(piperun.schema.origins.OriginGroup, 'originGroups', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})

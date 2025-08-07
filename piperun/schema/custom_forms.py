@@ -13,6 +13,8 @@ class CustomForm:
     is_active: bool | None
     page_title: str | None
     fields: list
+    created_at: datetime | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -22,6 +24,8 @@ class CustomForm:
         self.is_active = utils.parse_bool(k, 'status')
         self.page_title = utils.parse_str(k, 'page_title')
         self.fields = utils.parse_list(k, 'fields', CustomFormField)
+        self.created_at = utils.parse_date(k, 'created_at')
+        self.updated_at = utils.parse_date(k, 'updated_at')
 
 
 @dataclass

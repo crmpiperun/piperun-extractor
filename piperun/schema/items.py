@@ -25,6 +25,8 @@ class Item:
     code: str | None
     fix_commission_value: float | None
     is_product_belong_deal: bool | None
+    created_at: datetime | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -46,6 +48,8 @@ class Item:
         self.code = utils.parse_str(k, 'code')
         self.fix_commission_value = utils.parse_float(k, 'fix_commission_value')
         self.is_product_belong_deal = utils.parse_bool(k, 'is_product_belong_deal')
+        self.updated_at = utils.parse_date(k, 'updated_at')
+        self.created_at = utils.parse_date(k, 'created_at')
 
 
 @dataclass
@@ -106,6 +110,8 @@ class Category:
     description: str | None
     reference: str | None
     is_deleted: bool | None
+    created_at: datetime | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -114,3 +120,5 @@ class Category:
         self.description = utils.parse_str(k, 'description')
         self.reference = utils.parse_str(k, 'reference')
         self.is_deleted = utils.parse_bool(k, 'deleted')
+        self.updated_at = utils.parse_date(k, 'updated_at')
+        self.created_at = utils.parse_date(k, 'created_at')

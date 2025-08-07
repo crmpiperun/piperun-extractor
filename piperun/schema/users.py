@@ -21,6 +21,7 @@ class User:
     telephone: str | None
     created_at: datetime | None
     created_by: int | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -38,6 +39,7 @@ class User:
         self.telephone = utils.parse_str(k, 'telephone')
         self.created_at = utils.parse_date(k, 'created_at')
         self.created_by = utils.parse_int(k, 'created_by')
+        self.updated_at = utils.parse_date(k, 'updated_at')
 
 
 @dataclass
@@ -48,6 +50,8 @@ class Team:
     leader_id: int | None
     deal_user_id: int | None
     deal_quantity: int | None
+    created_at: datetime | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -56,6 +60,8 @@ class Team:
         self.leader_id = utils.parse_int(k, 'leader_id')  # User.id
         self.deal_user_id = utils.parse_int(k, 'deal_user_id')  # User.id
         self.deal_quantity = utils.parse_int(k, 'deal_quantity')
+        self.updated_at = utils.parse_date(k, 'updated_at')
+        self.created_at = utils.parse_date(k, 'created_at')
 
 
 @dataclass
