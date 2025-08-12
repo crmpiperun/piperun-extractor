@@ -122,8 +122,12 @@ class LostReason:
     id: int | None
     name: str | None
     is_active: bool | None
+    updated_at: datetime | None
+    created_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
         self.name = utils.parse_str(k, 'name')
         self.is_active = utils.parse_bool(k, 'status')
+        self.updated_at = utils.parse_date(k, 'updated_at')
+        self.created_at = utils.parse_date(k, 'created_at')

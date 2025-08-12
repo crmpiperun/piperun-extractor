@@ -21,6 +21,8 @@ class CustomFieldResponse:
     equation_decimal_places: int | None
     equation_allow_negative: str | None
     equation_currency_id: str | None
+    created_at: datetime | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -40,6 +42,8 @@ class CustomFieldResponse:
         self.equation_decimal_places = utils.parse_int(k, 'decimal_places')
         self.equation_allow_negative = utils.parse_str(k, 'allow_negative')
         self.equation_currency_id = utils.parse_str(k, 'currency_id')
+        self.created_at = utils.parse_date(k, 'created_at')
+        self.updated_at = utils.parse_date(k, 'updated_at')
 
 @dataclass
 class EntityHasCustomField:

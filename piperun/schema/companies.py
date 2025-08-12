@@ -113,6 +113,8 @@ class Segment:
     description_html: str | None
     description_text: str | None
     sector: int | None
+    updated_at: datetime | None
+    created_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -120,3 +122,5 @@ class Segment:
         self.description_html = utils.parse_str(k, 'description')
         self.description_text = utils.parse_html2text(k, 'description')
         self.sector = utils.parse_int(k, 'sector')
+        self.updated_at = utils.parse_date(k, 'updated_at')
+        self.created_at = utils.parse_date(k, 'created_at')

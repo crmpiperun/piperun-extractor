@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 
 from piperun import utils
 
@@ -17,6 +18,8 @@ class Pipeline:
     is_main: bool | None
     limit_time: int | None
     visibility: int | None
+    created_at: datetime | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -31,6 +34,8 @@ class Pipeline:
         self.is_main = utils.parse_bool(k, 'is_main')
         self.limit_time = utils.parse_int(k, 'limit_time')
         self.visibility = utils.parse_int(k, 'visibility')
+        self.updated_at = utils.parse_date(k, 'updated_at')
+        self.created_at = utils.parse_date(k, 'created_at')
 
 
 @dataclass
@@ -47,6 +52,8 @@ class Stage:
     block_emails: int | None
     days_limit: int | None
     update_limit: int | None
+    created_at: datetime | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -61,3 +68,6 @@ class Stage:
         self.block_emails = utils.parse_int(k, 'block_emails')
         self.days_limit = utils.parse_int(k, 'days_limit')
         self.update_limit = utils.parse_int(k, 'update_limit')
+        self.updated_at = utils.parse_date(k, 'updated_at')
+        self.created_at = utils.parse_date(k, 'created_at')
+

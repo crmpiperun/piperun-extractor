@@ -13,6 +13,7 @@ class Tag:
     created_at: datetime | None
     belongs: int | None
     is_active: bool | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -22,3 +23,4 @@ class Tag:
         self.created_at = utils.parse_date(k, 'created_at')
         self.belongs = utils.parse_int(k, 'belongs')
         self.is_active = utils.parse_bool(k, 'active')
+        self.updated_at = utils.parse_date(k, 'updated_at')

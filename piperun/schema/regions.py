@@ -16,6 +16,7 @@ class Region:
     balance: int | None
     created_at: datetime | None
     cities: list
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -27,3 +28,4 @@ class Region:
         self.balance = utils.parse_int(k, 'balance')
         self.created_at = utils.parse_date(k, 'created_at')
         self.cities = utils.parse_list(k, 'cities', City)
+        self.updated_at = utils.parse_date(k, 'updated_at')
