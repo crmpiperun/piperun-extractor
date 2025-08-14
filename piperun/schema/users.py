@@ -80,7 +80,32 @@ class TeamGroup:
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
         self.name = utils.parse_str(k, 'name')
-        self.teams = utils.parse_list(k, 'teams', Team)
-        self.users = utils.parse_list(k, 'users', User)
+        self.teams = utils.parse_list(k, 'teams', TeamGroupHasTeam)
+        self.users = utils.parse_list(k, 'users', TeamGroupHasUser)
         self.created_at = utils.parse_date(k, 'created_at')
         self.updated_at = utils.parse_date(k, 'updated_at')
+
+
+@dataclass
+class TeamGroupHasTeam:
+    team_group_id: int
+    team_id: int | None
+    team: Team
+
+    def __init__(self, **k):
+        self.team_group_id = utils.parse_int(k, 'team_group_id')
+        self.team_id = utils.parse_int(k, 'team_id')
+        self.team = utils.parse_obj(k, 'team', Team)
+
+@dataclass
+class TeamGroupHasUser:
+    team_group_id: int
+    user_id: int | None
+    permission: int
+    user: User
+
+    def __init__(self, **k):
+        self.team_group_id = utils.parse_int(k, 'team_group_id')
+        self.user_id = utils.parse_int(k, 'user_id')
+        self.permission = utils.parse_int(k, 'permission')
+        self.user = utils.parse_obj(k, 'user', User)
