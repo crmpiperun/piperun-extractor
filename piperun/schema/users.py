@@ -50,6 +50,8 @@ class Team:
     leader_id: int | None
     deal_user_id: int | None
     deal_quantity: int | None
+    members: list | None
+    leader: User | None
     created_at: datetime | None
     updated_at: datetime | None
 
@@ -60,6 +62,8 @@ class Team:
         self.leader_id = utils.parse_int(k, 'leader_id')  # User.id
         self.deal_user_id = utils.parse_int(k, 'deal_user_id')  # User.id
         self.deal_quantity = utils.parse_int(k, 'deal_quantity')
+        self.members = utils.parse_list(k, 'members', User)
+        self.leader = utils.parse_obj(k,'leader', User)
         self.updated_at = utils.parse_date(k, 'updated_at')
         self.created_at = utils.parse_date(k, 'created_at')
 
@@ -68,11 +72,15 @@ class Team:
 class TeamGroup:
     id: int | None
     name: str | None
+    teams: list
+    users: list
     created_at: datetime | None
     updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
         self.name = utils.parse_str(k, 'name')
+        self.teams = utils.parse_list(k, 'teams', Team)
+        self.users = utils.parse_list(k, 'users', User)
         self.created_at = utils.parse_date(k, 'created_at')
         self.updated_at = utils.parse_date(k, 'updated_at')
