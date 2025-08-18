@@ -88,7 +88,6 @@ class TeamGroup:
 class TeamGroupHasTeam:
     team_group_id: int
     team_id: int | None
-    team: Team
 
     def __init__(self, **k):
         self.team_group_id = utils.parse_int(k, 'team_group_id') # TeamGroup.id
