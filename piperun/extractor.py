@@ -167,7 +167,7 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.users.User, 'users', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def users_teams(self, after: datetime) -> Iterator[piperun.schema.users.Team]:
-        return self._fetch(piperun.schema.users.Team, 'teams', {'show': 200, 'with': 'members,leader', 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+        return self._fetch(piperun.schema.users.Team, 'teams', {'show': 200, 'with': 'members', 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def users_team_groups(self, after: datetime) -> Iterator[piperun.schema.users.TeamGroup]:
         return self._fetch(piperun.schema.users.TeamGroup, 'teamGroup', {'with': 'teams,users', 'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
