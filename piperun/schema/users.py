@@ -98,8 +98,10 @@ class TeamGroupHasUser:
     team_group_id: int
     user_id: int | None
     permission: int
+    permission_name: str
 
     def __init__(self, **k):
         self.team_group_id = utils.parse_int(k, 'team_group_id') # TeamGroup.id
         self.user_id = utils.parse_int(k, 'user_id') # User.id
         self.permission = utils.parse_int(k, 'permission')
+        self.permission_name = {1: 'permission_leader', 2: 'permission_user'}.get(self.permission)
