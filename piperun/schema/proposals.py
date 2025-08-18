@@ -89,6 +89,8 @@ class PaymentMethod:
     type: int | None
     down_payment: str | None
     config_active: int | None
+    created_at: datetime | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -103,6 +105,8 @@ class PaymentMethod:
         self.type = utils.parse_int(k, 'type')
         self.down_payment = utils.parse_str(k, 'down_payment')
         self.config_active = utils.parse_int(k, 'config_active')
+        self.created_at = utils.parse_date(k, 'created_at')
+        self.updated_at = utils.parse_date(k, 'updated_at')
 
 
 @dataclass
@@ -110,11 +114,15 @@ class ProposalModel:
     id: int | None
     name: str | None
     description_html: str | None
+    created_at: datetime | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
         self.name = utils.parse_str(k, 'name')
         self.description_html = utils.parse_str(k, 'description')
+        self.created_at = utils.parse_date(k, 'created_at')
+        self.updated_at = utils.parse_date(k, 'updated_at')
 
 
 @dataclass
@@ -160,6 +168,8 @@ class ProposalParcel:
     commission_value_money: float | None
     commission_value_percent: float | None
     parcel_type: int | None
+    created_at: datetime | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -179,6 +189,8 @@ class ProposalParcel:
         self.commission_value_money = utils.parse_float(k, 'commission_value_money')
         self.commission_value_percent = utils.parse_float(k, 'commission_value_percent')
         self.parcel_type = utils.parse_int(k, 'parcel_type')
+        self.created_at = utils.parse_date(k, 'created_at')
+        self.updated_at = utils.parse_date(k, 'updated_at')
 
 
 @dataclass

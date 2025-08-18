@@ -62,9 +62,13 @@ class EmailTemplate:
     owner_id: int | None
     name: str | None
     is_active: bool | None
+    created_at: datetime | None
+    updated_at: datetime | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
         self.owner_id = utils.parse_int(k, 'user_id')  # User.id
         self.name = utils.parse_str(k, 'name')
         self.is_active = utils.parse_bool(k, 'active')
+        self.created_at = utils.parse_date(k, 'created_at')
+        self.updated_at = utils.parse_date(k, 'updated_at')
