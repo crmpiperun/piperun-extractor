@@ -36,7 +36,7 @@ T = TypeVar('T')
 
 
 class PipeRunExtractor:
-    VERSION = '1.0.6'
+    VERSION = '1.0.7'
 
     def __init__(self,
                  token: str,
@@ -57,7 +57,7 @@ class PipeRunExtractor:
             'Token': token,
             'X-Token-Skip-Throttle': token_throttle,
             'X-Application-Piperun': 'Lib_Python_ETL',
-            'User-Agent': 'PipeRun API Python Client - v' + self.VERSION,
+            'User-Agent': 'piperun-extractor/' + self.VERSION,
             'Origin': utils.parse_origin(origin),
         }
 
