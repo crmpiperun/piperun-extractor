@@ -1,7 +1,7 @@
 import re
 import warnings
 from datetime import datetime
-from typing import Type, TypeVar
+from typing import Type, TypeVar, Any
 from urllib.parse import urlparse
 
 import pandas
@@ -115,3 +115,10 @@ def parse_origin(url: str) -> str | None:
     except ValueError:
         pass
     return None
+
+def parse_string_array_fields(raw: dict[str, Any], key: str) -> list[Any]:
+    value = raw.get(key)
+    if isinstance(value, list):
+        return value
+    else:
+        return []
