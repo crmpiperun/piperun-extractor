@@ -30,13 +30,14 @@ import piperun.schema.regions
 import piperun.schema.tags
 import piperun.schema.users
 import piperun.schema.custom_fields
+import piperun.schema.goals
 from piperun import utils
 
 T = TypeVar('T')
 
 
 class PipeRunExtractor:
-    VERSION = '1.0.8'
+    VERSION = '1.0.9'
 
     def __init__(self,
                  token: str,
@@ -280,3 +281,5 @@ class PipeRunExtractor:
     def persons_has_custom_fields(self,  after: datetime) -> Iterator[piperun.schema.custom_fields.EntityHasCustomField]:
         return self._fetch(piperun.schema.custom_fields.EntityHasCustomField, 'persons/custom-fields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
+    def advanced_goal(self, after: datetime) -> Iterator[piperun.schema.goals.Goals]:
+        return self._fetch(piperun.schema.goals.Goals, 'advanced-goals', {'show': 200, 'with':'value','updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
