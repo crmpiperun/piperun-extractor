@@ -64,7 +64,7 @@ class Goals:
         self.city_id = utils.parse_int(k, 'city_id')  # City.id
         self.segment_id = utils.parse_int(k, 'segment_id')  # Segment.id
         self.created_by_id = utils.parse_int(k, 'created_by_id')  # User.id
-        self.value = utils.parse_float(k, 'value') # Valor da meta a ser atingida
+        self.value = utils.parse_float(k, 'value')  # Valor da meta a ser atingida
         self.calculate_item_by_unit_value = utils.parse_bool(k, 'calculate_item_by_unit_value')
         self.active = utils.parse_bool(k, 'active')
         self.situation = utils.parse_int(k, 'situation')
