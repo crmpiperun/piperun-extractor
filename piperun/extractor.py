@@ -36,7 +36,7 @@ T = TypeVar('T')
 
 
 class PipeRunExtractor:
-    VERSION = '1.0.8'
+    VERSION = '1.1.0'
 
     def __init__(self,
                  token: str,
@@ -217,8 +217,11 @@ class PipeRunExtractor:
     def proposals_payment_methods_types(self, after: datetime) -> Iterator[piperun.schema.proposals.PaymentMethodsType]:
         return self._fetch(piperun.schema.proposals.PaymentMethodsType, 'paymentMethodTypes', {'show': 200})  # full fetch
 
-    def proposals_parcel_payments(self, after: datetime) -> Iterator[piperun.schema.proposals.ProposalParcel]:
-        return self._fetch(piperun.schema.proposals.ProposalParcel, 'proposalParcelPayments', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+    def proposals_parcel(self, after: datetime) -> Iterator[piperun.schema.proposals.ProposalParcel]:
+        return self._fetch(piperun.schema.proposals.ProposalParcel, 'proposalParcels', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+
+    def proposals_parcel_payments(self, after: datetime) -> Iterator[piperun.schema.proposals.ProposalParcelPayment]:
+        return self._fetch(piperun.schema.proposals.ProposalParcelPayment, 'proposalParcelPayments', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def cities(self, after: datetime) -> Iterator[piperun.schema.cities.City]:
         return self._fetch(piperun.schema.cities.City, 'cities', {'show': 200})  # full fetch
