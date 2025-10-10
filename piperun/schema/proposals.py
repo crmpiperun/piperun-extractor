@@ -150,6 +150,29 @@ class PaymentMethodsType:
 
 
 @dataclass
+class ProposalParcelPayment:
+    id: int
+    account_id: int
+    proposal_id: int
+    proposal_parcel_id: int
+    value: float | None
+    paid_at: datetime | None
+    created_at: datetime | None
+    updated_at: datetime | None
+    created_by: int | None
+
+def __init__(self, **k):
+    self.id = utils.parse_int(k, 'id')
+    self.account_id = utils.parse_int(k, 'account_id')
+    self.proposal_id = utils.parse_int(k, 'proposal_id')
+    self.proposal_parcel_id = utils.parse_int(k, 'proposal_parcel_id')
+    self.value = utils.parse_float(k, 'value')
+    self.paid_at = utils.parse_date(k, 'paid_at')
+    self.created_at = utils.parse_date(k, 'created_at')
+    self.updated_at = utils.parse_date(k, 'updated_at')
+    self.created_by = utils.parse_int(k, 'created_by')
+
+@dataclass
 class ProposalParcel:
     id: int | None
     parcel: int | None
