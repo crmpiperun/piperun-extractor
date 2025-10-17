@@ -1,3 +1,4 @@
+import dataclasses
 import re
 import warnings
 from datetime import datetime
@@ -12,7 +13,11 @@ warnings.filterwarnings('ignore', category=MarkupResemblesLocatorWarning)
 
 
 def parse_list(raw: dict, key: str, cast: Type[T]) -> list[T]:
-    return [cast(**value) for value in raw.get(key, [])]
+    raw_data = raw.get(key, [])
+    if not dataclasses.is_dataclass(cast):
+        return raw_data
+
+    return [cast(**value) for value in raw_data] # type: ignore
 
 
 def parse_obj(raw: dict, key: str, cast: Type[T]) -> T | None:
@@ -115,10 +120,3 @@ def parse_origin(url: str) -> str | None:
     except ValueError:
         pass
     return None
-
-def parse_string_array_fields(raw: dict[str, Any], key: str) -> list[Any]:
-    value = raw.get(key)
-    if isinstance(value, list):
-        return value
-    else:
-        return []

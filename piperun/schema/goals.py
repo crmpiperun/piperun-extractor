@@ -5,7 +5,7 @@ from piperun import utils
 
 
 @dataclass
-class Goals:
+class Goal:
     id: int
     visibility: int
     type: int
@@ -42,6 +42,7 @@ class Goals:
     call_relevance: list | None
     signature_status: list | None
     item_criterias_in: list | None
+    processed: list | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -73,11 +74,41 @@ class Goals:
         self.end_at = utils.parse_date(k, 'end_at')
         self.created_at = utils.parse_date(k, 'created_at')
         self.updated_at = utils.parse_date(k, 'updated_at')
-        self.item_criterias = utils.parse_string_array_fields(k, 'item_criterias')
-        self.deal_status = utils.parse_string_array_fields(k, 'deal_status')
-        self.deal_value_for = utils.parse_string_array_fields(k, 'deal_value_for')
-        self.proposal_status = utils.parse_string_array_fields(k, 'proposal_status')
-        self.activity_status = utils.parse_string_array_fields(k, 'activity_status')
-        self.call_relevance = utils.parse_string_array_fields(k, 'call_relevance')
-        self.signature_status = utils.parse_string_array_fields(k, 'signature_status')
-        self.item_criterias_in = utils.parse_string_array_fields(k, 'item_criterias_in')
+        self.item_criterias = utils.parse_list(k, 'item_criterias', str)
+        self.deal_status = utils.parse_list(k, 'deal_status', str)
+        self.deal_value_for = utils.parse_list(k, 'deal_value_for', str)
+        self.proposal_status = utils.parse_list(k, 'proposal_status', str)
+        self.activity_status = utils.parse_list(k, 'activity_status', str)
+        self.call_relevance = utils.parse_list(k, 'call_relevance', str)
+        self.signature_status = utils.parse_list(k, 'signature_status', str)
+        self.item_criterias_in = utils.parse_list(k, 'item_criterias_in', str)
+        self.processed = utils.parse_list(k, 'processed', Processed)
+
+
+@dataclass
+class Processed:
+    value: float | None
+    byUser: list | None
+
+    def __init__(self, **k):
+        self.value = utils.parse_float(k, 'value') # value realized
+        self.byUser = utils.parse_obj(k, 'byUser', ByUser)
+
+@dataclass
+class ByUser:
+    id: int | None
+    goal_id: int | None
+    user_id: int | None
+    team_id: int | None
+    value: float | None
+    created_at: datetime | None
+    updated_at: datetime | None
+
+    def __init__(self, **k):
+       self.id = utils.parse_int(k,'id')
+       self.goal_id = utils.parse_int(k,'goal_id') # Goal.id
+       self.user_id = utils.parse_int(k,'user_id') # User.id
+       self.team_id = utils.parse_int(k,'team_id') # Team.id
+       self.value = utils.parse_float(k,'value')
+       self.created_at = utils.parse_date(k,'created_at')
+       self.updated_at = utils.parse_date(k,'updated_at')
