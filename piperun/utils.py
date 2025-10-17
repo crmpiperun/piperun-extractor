@@ -2,7 +2,7 @@ import dataclasses
 import re
 import warnings
 from datetime import datetime
-from typing import Type, TypeVar, Any
+from typing import Type, TypeVar
 from urllib.parse import urlparse
 
 import pandas
