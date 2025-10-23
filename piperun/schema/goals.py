@@ -10,9 +10,9 @@ class Goal:
     visibility: int
     visibility_name: str
     type: int
+    type_name: str
     goal_for: int
     goal_for_name: str
-    type_name: str
     type_of_period_name: str
     item_criteria_name: str
     situation_name: str
