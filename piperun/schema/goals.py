@@ -8,8 +8,10 @@ from piperun import utils
 class Goal:
     id: int
     visibility: int
+    visibility_name: str
     type: int
     goal_for: int
+    goal_for_name: str
     type_name: str
     type_of_period_name: str
     item_criteria_name: str
@@ -27,7 +29,7 @@ class Goal:
     segment_id: int | None
     created_by_id: int | None
     situation: int | None
-    value: float | None
+    # value: float | None
     calculate_item_by_unit_value: bool | None
     active: bool | None
     start_at: datetime
@@ -47,9 +49,11 @@ class Goal:
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
         self.visibility = utils.parse_int(k, 'visibility')
+        self.visibility_name = {1: 'public', 2: 'private', 3: 'by_participant'}.get(self.visibility)
         self.type = utils.parse_int(k, 'type')
         self.type_name = {1: 'deals', 2: 'activities', 3: 'forecast', 4: 'proposals', 5: 'calls', 6: 'signatures'}.get(self.type)
         self.goal_for = utils.parse_int(k, 'goal_for')
+        self.goal_for_name = {1: 'quantity', 2: 'value', 3: 'lead_tme', 4: 'lead_time_in_stage', 5: 'duration'}.get(self.goal_for)
         self.title = utils.parse_str(k, 'title')
         self.observation = utils.parse_str(k, 'observation')
         self.state = utils.parse_str(k, 'state')
@@ -65,7 +69,6 @@ class Goal:
         self.city_id = utils.parse_int(k, 'city_id')  # City.id
         self.segment_id = utils.parse_int(k, 'segment_id')  # Segment.id
         self.created_by_id = utils.parse_int(k, 'created_by_id')  # User.id
-        self.value = utils.parse_float(k, 'value')  # Valor da meta a ser atingida
         self.calculate_item_by_unit_value = utils.parse_bool(k, 'calculate_item_by_unit_value')
         self.active = utils.parse_bool(k, 'active')
         self.situation = utils.parse_int(k, 'situation')
@@ -83,19 +86,12 @@ class Goal:
         self.signature_status = utils.parse_list(k, 'signature_status', str)
         self.item_criterias_in = utils.parse_list(k, 'item_criterias_in', str)
         self.processed = utils.parse_list(k, 'processed', Processed)
+        # self.value = utils.parse_float(k, 'value')  # Valor da meta a ser atingida
 
 
 @dataclass
 class Processed:
     value: float | None
-    byUser: list | None
-
-    def __init__(self, **k):
-        self.value = utils.parse_float(k, 'value') # value realized
-        self.byUser = utils.parse_obj(k, 'byUser', ByUser)
-
-@dataclass
-class ByUser:
     id: int | None
     goal_id: int | None
     user_id: int | None
@@ -105,10 +101,11 @@ class ByUser:
     updated_at: datetime | None
 
     def __init__(self, **k):
-       self.id = utils.parse_int(k,'id')
-       self.goal_id = utils.parse_int(k,'goal_id') # Goal.id
-       self.user_id = utils.parse_int(k,'user_id') # User.id
-       self.team_id = utils.parse_int(k,'team_id') # Team.id
-       self.value = utils.parse_float(k,'value')
-       self.created_at = utils.parse_date(k,'created_at')
-       self.updated_at = utils.parse_date(k,'updated_at')
+        self.value = utils.parse_float(k, 'value') # value realized
+        self.id = utils.parse_int(k, 'byUser.id')
+        self.goal_id = utils.parse_int(k, 'byUser.goal_id')  # Goal.id
+        self.user_id = utils.parse_int(k, 'byUser.user_id')  # User.id
+        self.team_id = utils.parse_int(k, 'byUser.team_id')  # Team.id
+        self.value = utils.parse_float(k, 'byUser.value')
+        self.created_at = utils.parse_date(k, 'byUser.created_at')
+        self.updated_at = utils.parse_date(k, 'byUser.updated_at')
