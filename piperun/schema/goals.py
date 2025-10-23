@@ -29,7 +29,6 @@ class Goal:
     segment_id: int | None
     created_by_id: int | None
     situation: int | None
-    # value: float | None
     calculate_item_by_unit_value: bool | None
     active: bool | None
     start_at: datetime
@@ -45,6 +44,7 @@ class Goal:
     signature_status: list | None
     item_criterias_in: list | None
     processed: list | None
+    value_achieved: float | None
 
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
@@ -86,26 +86,26 @@ class Goal:
         self.signature_status = utils.parse_list(k, 'signature_status', str)
         self.item_criterias_in = utils.parse_list(k, 'item_criterias_in', str)
         self.processed = utils.parse_list(k, 'processed', Processed)
-        # self.value = utils.parse_float(k, 'value')  # Valor da meta a ser atingida
+        self.value_achieved = sum((item.value_realized if item.value_realized is not None else 0.0) for item in self.processed)
 
 
 @dataclass
 class Processed:
-    value: float | None
     id: int | None
     goal_id: int | None
     user_id: int | None
     team_id: int | None
-    value: float | None
+    value_realized: float | None
+    value_process_by_user: float | None
     created_at: datetime | None
     updated_at: datetime | None
 
     def __init__(self, **k):
-        self.value = utils.parse_float(k, 'value') # value realized
-        self.id = utils.parse_int(k, 'byUser.id')
+        self.value_realized = utils.parse_float(k, 'value')
+        self.id = utils.parse_int(k, 'byUser.id') # User.id
         self.goal_id = utils.parse_int(k, 'byUser.goal_id')  # Goal.id
         self.user_id = utils.parse_int(k, 'byUser.user_id')  # User.id
         self.team_id = utils.parse_int(k, 'byUser.team_id')  # Team.id
-        self.value = utils.parse_float(k, 'byUser.value')
+        self.value_process_by_user = utils.parse_float(k, 'byUser.value')
         self.created_at = utils.parse_date(k, 'byUser.created_at')
         self.updated_at = utils.parse_date(k, 'byUser.updated_at')
