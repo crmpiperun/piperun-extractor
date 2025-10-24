@@ -1,0 +1,33 @@
+name: MyPy Type Checking
+
+on:
+  push:
+    paths:
+      - '**/*.py'
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+      - synchronize
+
+jobs:
+  mypy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        pip install -e .[dev]
+
+    - name: MyPy
+      run: |
+        mypy

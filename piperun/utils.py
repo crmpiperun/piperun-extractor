@@ -1,7 +1,7 @@
 import re
 import warnings
 from datetime import datetime
-from typing import Type, TypeVar
+from typing import TypeVar, Callable
 from urllib.parse import urlparse
 
 import pandas
@@ -10,18 +10,28 @@ from bs4 import BeautifulSoup, MarkupResemblesLocatorWarning
 T = TypeVar('T')
 warnings.filterwarnings('ignore', category=MarkupResemblesLocatorWarning)
 
+def get_nested(data: dict, path: str, default=None):
+    try:
+        value = data
+        for key in path.split('.'):
+            value = value[key]
+        return value
+    except (KeyError, TypeError):
+        return default
 
-def parse_list(raw: dict, key: str, cast: Type[T]) -> list[T]:
-    return [cast(**value) for value in raw.get(key, [])]
+
+def parse_list(raw: dict, key: str, cast: Callable[..., T]) -> list[T]:
+    data = get_nested(raw, key, [])
+    return [cast(**value) if isinstance(value, dict) else cast(value) for value in data]
 
 
-def parse_obj(raw: dict, key: str, cast: Type[T]) -> T | None:
-    value = raw.get(key, None)
+def parse_obj(raw: dict, key: str, cast: Callable[..., T]) -> T | None:
+    value = get_nested(raw, key, None)
     return cast(**value) if isinstance(value, dict) else None
 
 
 def parse_int(raw: dict, key: str) -> int | None:
-    value: str|None = raw.get(key, None)
+    value: str|None = get_nested(raw, key)
     try:
         return int(value) if value is not None else None
     except ValueError:
@@ -29,7 +39,7 @@ def parse_int(raw: dict, key: str) -> int | None:
 
 
 def parse_bool(raw: dict, key: str) -> bool | None:
-    value = raw.get(key, None)
+    value = get_nested(raw, key)
     try:
         return bool(value) if value is not None else None
     except ValueError:
@@ -37,7 +47,7 @@ def parse_bool(raw: dict, key: str) -> bool | None:
 
 
 def parse_float(raw: dict, key: str) -> float | None:
-    value: str|None = raw.get(key, None)
+    value: str|None = get_nested(raw, key)
     try:
         return float(value) if value is not None else None
     except ValueError:
@@ -45,7 +55,7 @@ def parse_float(raw: dict, key: str) -> float | None:
 
 
 def parse_str(raw: dict, key: str) -> str | None:
-    value = raw.get(key, None)
+    value = get_nested(raw, key)
     try:
         return str(value) if value is not None else None
     except ValueError:
@@ -53,12 +63,12 @@ def parse_str(raw: dict, key: str) -> str | None:
 
 
 def parse_html2text(raw: dict, key: str) -> str | None:
-    value = raw.get(key, '')
+    value = get_nested(raw, key, '')
     return BeautifulSoup(value, 'html.parser').get_text() if value else None
 
 
 def parse_mail(raw: dict, key: str) -> str | None:
-    value = raw.get(key, '')
+    value = get_nested(raw, key, '')
 
     if not value or not isinstance(value, str):
         return None
@@ -67,7 +77,7 @@ def parse_mail(raw: dict, key: str) -> str | None:
 
 
 def parse_url(raw: dict, key: str) -> str | None:
-    value: str = raw.get(key, '')
+    value: str|None = get_nested(raw, key)
 
     if not value or not isinstance(value, str):
         return None
@@ -84,7 +94,7 @@ def parse_url(raw: dict, key: str) -> str | None:
 
 
 def parse_date(raw: dict, key: str) -> datetime | None:
-    value = raw.get(key, '')
+    value = get_nested(raw, key)
 
     if not value or not isinstance(value, str):
         return None

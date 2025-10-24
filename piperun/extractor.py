@@ -30,13 +30,14 @@ import piperun.schema.regions
 import piperun.schema.tags
 import piperun.schema.users
 import piperun.schema.custom_fields
+import piperun.schema.goals
 from piperun import utils
 
 T = TypeVar('T')
 
 
 class PipeRunExtractor:
-    VERSION = '1.1.0'
+    VERSION = '1.2.0'
 
     def __init__(self,
                  token: str,
@@ -188,13 +189,13 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.deals.LostReason, 'lostReasons', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def companies(self, after: datetime) -> Iterator[piperun.schema.companies.Company]:
-        return self._fetch(piperun.schema.companies.Company, 'companies', {'show': 100, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+        return self._fetch(piperun.schema.companies.Company, 'companies', {'show': 100, 'with': 'tags', 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def companies_segments(self, after: datetime) -> Iterator[piperun.schema.companies.Segment]:
         return self._fetch(piperun.schema.companies.Segment, 'segments', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def persons(self, after: datetime) -> Iterator[piperun.schema.person.Person]:
-        return self._fetch(piperun.schema.person.Person, 'persons', {'show': 100, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+        return self._fetch(piperun.schema.person.Person, 'persons', {'show': 100, 'with': 'tags', 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def activities(self, after: datetime) -> Iterator[piperun.schema.activities.Activity]:
         return self._fetch(piperun.schema.activities.Activity, 'activities', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
@@ -283,3 +284,10 @@ class PipeRunExtractor:
     def persons_has_custom_fields(self,  after: datetime) -> Iterator[piperun.schema.custom_fields.EntityHasCustomField]:
         return self._fetch(piperun.schema.custom_fields.EntityHasCustomField, 'persons/custom-fields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
+    def goals_active(self, after: datetime) -> Iterator[piperun.schema.goals.Goal]:
+        situation_active = 1
+        return self._fetch(piperun.schema.goals.Goal,'advanced-goals',{'show': 20, 'with': 'processed', 'situation': situation_active})  # full fetch
+
+    def goals_inactive(self, after: datetime) -> Iterator[piperun.schema.goals.Goal]:
+        situation_closed = 2
+        return self._fetch(piperun.schema.goals.Goal,'advanced-goals',{'show': 20, 'with': 'processed', 'situation': situation_closed, 'end_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
