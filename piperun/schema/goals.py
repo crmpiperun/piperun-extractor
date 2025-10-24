@@ -86,7 +86,7 @@ class Goal:
         self.signature_status = utils.parse_list(k, 'signature_status', str)
         self.item_criterias_in = utils.parse_list(k, 'item_criterias_in', str)
         self.processed_by_user = utils.parse_list(k, 'processed', ProcessedByUser)
-        self.value_achieved = sum((item.value_achieved if item.value_achieved is not None else 0.0) for item in self.processed_by_user)
+        self.value_achieved = sum(item.value_achieved if item.value_achieved is not None else 0.0 for item in self.processed_by_user)
 
 
 @dataclass
