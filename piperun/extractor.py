@@ -286,8 +286,8 @@ class PipeRunExtractor:
 
     def goals_active(self, after: datetime) -> Iterator[piperun.schema.goals.Goal]:
         situation_active = 1
-        return self._fetch(piperun.schema.goals.Goal,'advanced-goals',{'show': 200, 'with': 'processed', 'situation': situation_active})
+        return self._fetch(piperun.schema.goals.Goal,'advanced-goals',{'show': 20, 'with': 'processed', 'situation': situation_active})  # full fetch
 
     def goals_inactive(self, after: datetime) -> Iterator[piperun.schema.goals.Goal]:
         situation_closed = 2
-        return self._fetch(piperun.schema.goals.Goal,'advanced-goals',{'show': 200, 'with': 'processed', 'situation': situation_closed, 'end_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+        return self._fetch(piperun.schema.goals.Goal,'advanced-goals',{'show': 20, 'with': 'processed', 'situation': situation_closed, 'end_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
