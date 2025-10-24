@@ -43,7 +43,7 @@ class Goal:
     call_relevance: list | None
     signature_status: list | None
     item_criterias_in: list | None
-    processed: list | None
+    processed_by_user: list | None
     value_achieved: float | None
 
     def __init__(self, **k):
@@ -85,27 +85,27 @@ class Goal:
         self.call_relevance = utils.parse_list(k, 'call_relevance', str)
         self.signature_status = utils.parse_list(k, 'signature_status', str)
         self.item_criterias_in = utils.parse_list(k, 'item_criterias_in', str)
-        self.processed = utils.parse_list(k, 'processed', Processed)
-        self.value_achieved = sum((item.value_realized if item.value_realized is not None else 0.0) for item in self.processed)
+        self.processed_by_user = utils.parse_list(k, 'processed', ProcessedByUser)
+        self.value_achieved = sum((item.value_achieved if item.value_achieved is not None else 0.0) for item in self.processed_by_user)
 
 
 @dataclass
-class Processed:
+class ProcessedByUser:
     id: int | None
     goal_id: int | None
     user_id: int | None
     team_id: int | None
-    value_realized: float | None
-    value_process_by_user: float | None
+    value_achieved: float | None
+    value_goal: float | None
     created_at: datetime | None
     updated_at: datetime | None
 
     def __init__(self, **k):
-        self.value_realized = utils.parse_float(k, 'value')
+        self.value_achieved = utils.parse_float(k, 'value')
         self.id = utils.parse_int(k, 'byUser.id') # User.id
         self.goal_id = utils.parse_int(k, 'byUser.goal_id')  # Goal.id
         self.user_id = utils.parse_int(k, 'byUser.user_id')  # User.id
         self.team_id = utils.parse_int(k, 'byUser.team_id')  # Team.id
-        self.value_process_by_user = utils.parse_float(k, 'byUser.value')
+        self.value_goal = utils.parse_float(k, 'byUser.value')
         self.created_at = utils.parse_date(k, 'byUser.created_at')
         self.updated_at = utils.parse_date(k, 'byUser.updated_at')

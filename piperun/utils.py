@@ -22,15 +22,9 @@ def get_nested(data: dict, path: str, default=None):
 
 
 def parse_list(raw: dict, key: str, cast: Type[T]) -> list[T]:
-    data = get_nested(raw, key)
+    data = get_nested(raw, key, [])
+    return [cast(**value) if isinstance(value, dict) else cast(value) for value in data]
 
-    if not data:
-        return []
-
-    if isinstance(data[0], dict):
-        return [cast(**item) for item in data]
-    else:
-        return [cast(item) for item in data]
 
 
 def parse_obj(raw: dict, key: str, cast: Type[T]) -> T | None:
@@ -39,7 +33,7 @@ def parse_obj(raw: dict, key: str, cast: Type[T]) -> T | None:
 
 
 def parse_int(raw: dict, key: str) -> int | None:
-    value: str|None = get_nested(raw, key, None)
+    value: str|None = get_nested(raw, key)
     try:
         return int(value) if value is not None else None
     except ValueError:
@@ -47,7 +41,7 @@ def parse_int(raw: dict, key: str) -> int | None:
 
 
 def parse_bool(raw: dict, key: str) -> bool | None:
-    value = get_nested(raw, key, None)
+    value = get_nested(raw, key)
     try:
         return bool(value) if value is not None else None
     except ValueError:
@@ -55,7 +49,7 @@ def parse_bool(raw: dict, key: str) -> bool | None:
 
 
 def parse_float(raw: dict, key: str) -> float | None:
-    value: str|None = get_nested(raw, key, raw)
+    value: str|None = get_nested(raw, key)
     try:
         return float(value) if value is not None else None
     except ValueError:
@@ -63,7 +57,7 @@ def parse_float(raw: dict, key: str) -> float | None:
 
 
 def parse_str(raw: dict, key: str) -> str | None:
-    value = get_nested(raw, key, None)
+    value = get_nested(raw, key)
     try:
         return str(value) if value is not None else None
     except ValueError:
@@ -85,7 +79,7 @@ def parse_mail(raw: dict, key: str) -> str | None:
 
 
 def parse_url(raw: dict, key: str) -> str | None:
-    value: str|None = get_nested(raw, key,None)
+    value: str|None = get_nested(raw, key)
 
     if not value or not isinstance(value, str):
         return None
@@ -102,7 +96,7 @@ def parse_url(raw: dict, key: str) -> str | None:
 
 
 def parse_date(raw: dict, key: str) -> datetime | None:
-    value = get_nested(raw, key, None)
+    value = get_nested(raw, key)
 
     if not value or not isinstance(value, str):
         return None

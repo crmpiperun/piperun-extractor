@@ -4,7 +4,7 @@ import math
 import re
 import time
 from collections.abc import Iterator as CollectionsIterator
-from datetime import datetime, timedelta
+from datetime import datetime
 from functools import partial
 from typing import Iterator, Dict, Any, Type, TypeVar, List, get_origin
 
@@ -285,10 +285,9 @@ class PipeRunExtractor:
         return self._fetch(piperun.schema.custom_fields.EntityHasCustomField, 'persons/custom-fields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def goals_active(self, after: datetime) -> Iterator[piperun.schema.goals.Goal]:
-        now = after
-        yesterday = now - timedelta(days=1)
-        return self._fetch(piperun.schema.goals.Goal,'advanced-goals',{'show': 200,'with': 'processed','start_at_end': now.strftime('%Y-%m-%d'),'end_at_start': yesterday.strftime('%Y-%m-%d')})
+        situation_active = 1
+        return self._fetch(piperun.schema.goals.Goal,'advanced-goals',{'show': 200, 'with': 'processed', 'situation': situation_active})
 
     def goals_inactive(self, after: datetime) -> Iterator[piperun.schema.goals.Goal]:
         situation_closed = 2
-        return self._fetch(piperun.schema.goals.Goal,'advanced-goals',{'show': 200,'with': 'processed','situation': situation_closed})
+        return self._fetch(piperun.schema.goals.Goal,'advanced-goals',{'show': 200, 'with': 'processed', 'situation': situation_closed, 'end_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
