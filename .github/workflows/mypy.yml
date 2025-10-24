@@ -3,7 +3,7 @@ name: MyPy Type Checking
 on:
   push:
     paths:
-      - '*.py'
+      - '**/*.py'
   pull_request:
     types:
       - opened
