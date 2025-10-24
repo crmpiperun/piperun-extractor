@@ -86,7 +86,7 @@ class TeamGroup:
 
 @dataclass
 class TeamGroupHasTeam:
-    team_group_id: int
+    team_group_id: int | None
     team_id: int | None
 
     def __init__(self, **k):
@@ -95,13 +95,13 @@ class TeamGroupHasTeam:
 
 @dataclass
 class TeamGroupHasUser:
-    team_group_id: int
+    team_group_id: int | None
     user_id: int | None
-    permission: int
-    permission_name: str
+    permission: int | None
+    permission_name: str | None
 
     def __init__(self, **k):
         self.team_group_id = utils.parse_int(k, 'team_group_id') # TeamGroup.id
         self.user_id = utils.parse_int(k, 'user_id') # User.id
         self.permission = utils.parse_int(k, 'permission')
-        self.permission_name = {1: 'Leader', 2: 'User'}.get(self.permission)
+        self.permission_name = {1: 'Leader', 2: 'User', None: None}.get(self.permission)
