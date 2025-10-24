@@ -1,4 +1,3 @@
-import dataclasses
 import re
 import warnings
 from datetime import datetime
@@ -26,8 +25,6 @@ def parse_list(raw: dict, key: str, cast: Callable[..., T]) -> list[T]:
     return [cast(**value) if isinstance(value, dict) else cast(value) for value in data]
 
 
-
-def parse_obj(raw: dict, key: str, cast: Type[T]) -> T | None:
 def parse_obj(raw: dict, key: str, cast: Callable[..., T]) -> T | None:
     value = get_nested(raw, key, None)
     return cast(**value) if isinstance(value, dict) else None
