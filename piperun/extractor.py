@@ -57,7 +57,7 @@ class PipeRunExtractor:
         self.headers = {
             'Token': token,
             'X-Token-Skip-Throttle': token_throttle,
-            'X-Application-Id': 'lib-python-etl',
+            'X-Application-Id': 'crm-extractor',
             'User-Agent': 'piperun-extractor/' + self.VERSION,
             'Origin': utils.parse_origin(origin),
         }
