@@ -37,11 +37,10 @@ T = TypeVar('T')
 
 
 class PipeRunExtractor:
-    VERSION = '1.2.1'
+    VERSION = '1.2.2'
 
     def __init__(self,
                  token: str,
-                 token_throttle: str = '',
                  origin: str = '',
                  log_level: str = 'WARNING',
                  base_url: str = 'https://api.pipe.run/v1',
@@ -51,12 +50,8 @@ class PipeRunExtractor:
         if not re.fullmatch(r"[a-fA-F0-9]{32}", token):
             raise Exception('Invalid token')
 
-        if token_throttle and not re.fullmatch(r"[a-fA-F0-9]{32}", token_throttle):
-            raise Exception('Invalid skip throttle token')
-
         self.headers = {
             'Token': token,
-            'X-Token-Skip-Throttle': token_throttle,
             'X-Application-Id': 'crm-extractor',
             'User-Agent': 'piperun-extractor/' + self.VERSION,
             'Origin': utils.parse_origin(origin),

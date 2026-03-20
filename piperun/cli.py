@@ -89,9 +89,6 @@ def execute_one(piperun: PipeRunExtractor, method: str, after: datetime, extensi
               help='Output Extension')
 @click.option('-o', '--output', show_envvar=True, required=True,
               help='Output Location')
-@click.option('--throttle', show_envvar=True, required=False,
-              callback=validate_token,
-              help='Throttle Token')
 @click.option('--log', show_envvar=True, required=False, default='warning', show_default=True,
               type=click.Choice(['critical', 'error', 'warning', 'info', 'debug']),
               help='Log level')
@@ -101,12 +98,11 @@ def execute_one(piperun: PipeRunExtractor, method: str, after: datetime, extensi
 @click.option('--url', show_envvar=True, required=False, default='https://api.pipe.run/v1', show_default=True,
               type=click.STRING,
               help='PipeRun API')
-def main(token, throttle, log, origin, url, after, ext, output, method: str):
+def main(token, log, origin, url, after, ext, output, method: str):
     assert_output(method, ext, output)
 
     piperun = PipeRunExtractor(
         token=token,
-        token_throttle=throttle,
         log_level=log,
         origin=origin,
         base_url=url,
