@@ -37,7 +37,7 @@ T = TypeVar('T')
 
 
 class PipeRunExtractor:
-    VERSION = '1.2.2'
+    VERSION = '2.0.0'
 
     def __init__(self,
                  token: str,
