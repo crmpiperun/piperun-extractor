@@ -37,7 +37,7 @@ T = TypeVar('T')
 
 
 class PipeRunExtractor:
-    VERSION = '2.0.0'
+    VERSION = '2.1.0'
 
     def __init__(self,
                  token: str,
@@ -278,6 +278,9 @@ class PipeRunExtractor:
 
     def persons_has_custom_fields(self,  after: datetime) -> Iterator[piperun.schema.custom_fields.EntityHasCustomField]:
         return self._fetch(piperun.schema.custom_fields.EntityHasCustomField, 'persons/custom-fields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+
+    def deals_has_products(self, after: datetime) -> Iterator[piperun.schema.items.DealHasProduct]:
+        return self._fetch(piperun.schema.items.DealHasProduct, 'deals/products', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def goals_active(self, after: datetime) -> Iterator[piperun.schema.goals.Goal]:
         situation_active = 1

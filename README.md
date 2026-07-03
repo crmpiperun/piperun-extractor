@@ -82,6 +82,7 @@ custom_fields                   Iterator[schema.custom_fields.CustomFieldRespons
 deals_has_custom_fields         Iterator[schema.custom_fields.EntityHasCustomField]
 companies_has_custom_fields     Iterator[schema.custom_fields.EntityHasCustomField]
 persons_has_custom_fields       Iterator[schema.custom_fields.EntityHasCustomField]
+deals_has_products              Iterator[schema.items.DealHasProduct]
 custom_forms                    Iterator[schema.custom_forms.CustomForm]
 notes                           Iterator[schema.notes.Note]
 items                           Iterator[schema.items.Item]
