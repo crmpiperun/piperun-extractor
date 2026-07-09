@@ -108,7 +108,6 @@ class DealHasProduct:
     deal_id: int | None
     product_id: int | None
     custom_field_id: int | None
-    brand_id: int | None
     status: int | None
     quantity: float | None
     value: float | None
@@ -135,7 +134,6 @@ class DealHasProduct:
         self.deal_id = utils.parse_int(k, 'deal_id')  # Deal.id
         self.product_id = utils.parse_int(k, 'product_id')  # Item.id
         self.custom_field_id = utils.parse_int(k, 'custom_field_id')  # CustomField.id
-        self.brand_id = utils.parse_int(k, 'brand_id')  # Company.id
         self.status = utils.parse_int(k, 'status')
         self.quantity = utils.parse_float(k, 'quantity')
         self.value = utils.parse_float(k, 'value')
