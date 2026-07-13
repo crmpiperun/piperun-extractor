@@ -22,7 +22,7 @@ warn_unused_ignores = true
 name = "piperun-extractor"
 description = "PipeRun Extractor Tool/Lib"
 readme = "README.md"
-version = "2.0.0"
+version = "2.1.0"
 authors = [
     { name = "Tonin Bolzan", email = "tonin@crmpiperun.com" }
 ]

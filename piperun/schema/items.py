@@ -103,6 +103,60 @@ class CharacteristicOption:
 
 
 @dataclass
+class DealHasItem:
+    id: int | None
+    deal_id: int | None
+    item_id: int | None
+    custom_field_id: int | None
+    status: int | None
+    quantity: float | None
+    value: float | None
+    ipi_tax: float | None
+    ipi_value: float | None
+    discount_type: int | None
+    discount_value: float | None
+    discount_value_absolute: float | None
+    discount_value_percentage: float | None
+    sub_total_value: float | None
+    total_value: float | None
+    cost: float | None
+    markup_type: int | None
+    markup_value: float | None
+    markup_value_absolute: float | None
+    markup_value_percentage: float | None
+    duration: int | None
+    formula_text: str | None
+    created_at: datetime | None
+    updated_at: datetime | None
+
+    def __init__(self, **k):
+        self.id = utils.parse_int(k, 'id')
+        self.deal_id = utils.parse_int(k, 'deal_id')  # Deal.id
+        self.item_id = utils.parse_int(k, 'item_id')  # Item.id
+        self.custom_field_id = utils.parse_int(k, 'custom_field_id')  # CustomField.id
+        self.status = utils.parse_int(k, 'status')
+        self.quantity = utils.parse_float(k, 'quantity')
+        self.value = utils.parse_float(k, 'value')
+        self.ipi_tax = utils.parse_float(k, 'ipi_tax')
+        self.ipi_value = utils.parse_float(k, 'ipi_value')
+        self.discount_type = utils.parse_int(k, 'discount_type')
+        self.discount_value = utils.parse_float(k, 'discount_value')
+        self.discount_value_absolute = utils.parse_float(k, 'discount_value_absolute')
+        self.discount_value_percentage = utils.parse_float(k, 'discount_value_percentage')
+        self.sub_total_value = utils.parse_float(k, 'sub_total_value')
+        self.total_value = utils.parse_float(k, 'total_value')
+        self.cost = utils.parse_float(k, 'cost')
+        self.markup_type = utils.parse_int(k, 'markup_type')
+        self.markup_value = utils.parse_float(k, 'markup_value')
+        self.markup_value_absolute = utils.parse_float(k, 'markup_value_absolute')
+        self.markup_value_percentage = utils.parse_float(k, 'markup_value_percentage')
+        self.duration = utils.parse_int(k, 'duration')
+        self.formula_text = utils.parse_str(k, 'formula_text')
+        self.created_at = utils.parse_date(k, 'created_at')
+        self.updated_at = utils.parse_date(k, 'updated_at')
+
+
+@dataclass
 class Category:
     id: int | None
     category_id: int | None
