@@ -103,10 +103,10 @@ class CharacteristicOption:
 
 
 @dataclass
-class DealHasProduct:
+class DealHasItem:
     id: int | None
     deal_id: int | None
-    product_id: int | None
+    item_id: int | None
     custom_field_id: int | None
     status: int | None
     quantity: float | None
@@ -132,7 +132,7 @@ class DealHasProduct:
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
         self.deal_id = utils.parse_int(k, 'deal_id')  # Deal.id
-        self.product_id = utils.parse_int(k, 'product_id')  # Item.id
+        self.item_id = utils.parse_int(k, 'product_id')  # Item.id
         self.custom_field_id = utils.parse_int(k, 'custom_field_id')  # CustomField.id
         self.status = utils.parse_int(k, 'status')
         self.quantity = utils.parse_float(k, 'quantity')

@@ -108,11 +108,11 @@ class PipeRunExtractor:
                 self.logger.debug(f'Requesting {endpoint} with params {params}')
                 response = requests.get(endpoint, params=params, headers=self.headers, timeout=60, verify=True)
                 code = response.status_code
-                
+
                 if 'Retry-After' in response.headers:
                     has_retry_header = True
                     retry_after = max(retry_after, int(response.headers.get('Retry-After', retry_after)))
-    
+
                 if 200 <= code < 300:
                     return response.json()
             except RequestException as e:
@@ -136,7 +136,7 @@ class PipeRunExtractor:
                 self.logger.error(f'Request failed with status code {code}. Retrying in {retry_after} seconds.')
                 # if error is unknown, timeout, 5xx or 4xx: reduce the number of items to retrieve
                 params['show'] = max(1, min(200, math.ceil(int(params.get('show', 1)) / 2)))  # Cut show in half every error
-    
+
             if has_retry_header:
                 time.sleep(retry_after)  # Use Retry-After value directly
             else:
@@ -279,8 +279,8 @@ class PipeRunExtractor:
     def persons_has_custom_fields(self,  after: datetime) -> Iterator[piperun.schema.custom_fields.EntityHasCustomField]:
         return self._fetch(piperun.schema.custom_fields.EntityHasCustomField, 'persons/custom-fields', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
-    def deals_has_products(self, after: datetime) -> Iterator[piperun.schema.items.DealHasProduct]:
-        return self._fetch(piperun.schema.items.DealHasProduct, 'deals/products', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+    def deals_has_items(self, after: datetime) -> Iterator[piperun.schema.items.DealHasItem]:
+        return self._fetch(piperun.schema.items.DealHasItem, 'deals/items', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def goals_active(self, after: datetime) -> Iterator[piperun.schema.goals.Goal]:
         situation_active = 1
