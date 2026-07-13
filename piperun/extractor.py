@@ -106,7 +106,7 @@ class PipeRunExtractor:
             code = 0
             try:
                 self.logger.debug(f'Requesting {endpoint} with params {params}')
-                response = requests.get(endpoint, params=params, headers=self.headers, timeout=60, verify=True)
+                response = requests.get(endpoint, params=params, headers=self.headers, timeout=60, verify=False)
                 code = response.status_code
 
                 if 'Retry-After' in response.headers:

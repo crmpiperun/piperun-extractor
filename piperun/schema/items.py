@@ -132,7 +132,7 @@ class DealHasItem:
     def __init__(self, **k):
         self.id = utils.parse_int(k, 'id')
         self.deal_id = utils.parse_int(k, 'deal_id')  # Deal.id
-        self.item_id = utils.parse_int(k, 'product_id')  # Item.id
+        self.item_id = utils.parse_int(k, 'item_id')  # Item.id
         self.custom_field_id = utils.parse_int(k, 'custom_field_id')  # CustomField.id
         self.status = utils.parse_int(k, 'status')
         self.quantity = utils.parse_float(k, 'quantity')
