@@ -19,7 +19,6 @@ class Item:
     is_active: bool | None
     photo: str | None
     commission: float | None
-    brand_id: int | None
     ipi_tax: float | None
     measurement_unit_id: int | None
     code: str | None
@@ -42,7 +41,6 @@ class Item:
         self.is_active = not utils.parse_bool(k, 'status')
         self.photo = utils.parse_url(k, 'photo')
         self.commission = utils.parse_float(k, 'commission')
-        self.brand_id = utils.parse_int(k, 'brand_id')  # Company.id
         self.ipi_tax = utils.parse_float(k, 'ipi_tax')
         self.measurement_unit_id = utils.parse_int(k, 'measurement_unit_id')  # MeasurementUnit.id
         self.code = utils.parse_str(k, 'code')
@@ -176,3 +174,17 @@ class Category:
         self.is_deleted = utils.parse_bool(k, 'deleted')
         self.updated_at = utils.parse_date(k, 'updated_at')
         self.created_at = utils.parse_date(k, 'created_at')
+
+
+@dataclass
+class ItemHasBrand:
+    item_id: int | None
+    brand_id: int | None
+    created_at: datetime | None
+    updated_at: datetime | None
+
+    def __init__(self, **k):
+        self.item_id = utils.parse_int(k, 'item_id')  # Item.id
+        self.brand_id = utils.parse_int(k, 'brand_id')  # Company.id
+        self.created_at = utils.parse_date(k, 'created_at')
+        self.updated_at = utils.parse_date(k, 'updated_at')

@@ -37,7 +37,7 @@ T = TypeVar('T')
 
 
 class PipeRunExtractor:
-    VERSION = '2.1.0'
+    VERSION = '3.0.0'
 
     def __init__(self,
                  token: str,
@@ -245,6 +245,9 @@ class PipeRunExtractor:
 
     def items_measurement_units(self, after: datetime) -> Iterator[piperun.schema.items.MeasurementUnit]:
         return self._fetch(piperun.schema.items.MeasurementUnit, 'measurementUnit', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
+
+    def items_has_brands(self, after: datetime) -> Iterator[piperun.schema.items.ItemHasBrand]:
+        return self._fetch(piperun.schema.items.ItemHasBrand, 'items/brands', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})
 
     def datalists(self, after: datetime) -> Iterator[piperun.schema.data_lists.DataList]:
         return self._fetch(piperun.schema.data_lists.DataList, 'datalists', {'show': 200, 'updated_at_start': after.strftime('%Y-%m-%d %H:%M:%S')})

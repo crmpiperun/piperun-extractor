@@ -89,6 +89,7 @@ items                           Iterator[schema.items.Item]
 items_characteristics           Iterator[schema.items.Characteristic]
 items_categories                Iterator[schema.items.Category]
 items_measurement_units         Iterator[schema.items.MeasurementUnit]
+items_has_brands                Iterator[piperun.schema.items.ItemHasBrand]:
 datalists                       Iterator[schema.data_lists.DataList]
 tags                            Iterator[schema.tags.Tag]
 cnaes                           Iterator[schema.cnaes.Cnae]
