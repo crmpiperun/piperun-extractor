@@ -178,12 +178,14 @@ class Category:
 
 @dataclass
 class ItemHasBrand:
+    id: int | None
     item_id: int | None
     brand_id: int | None
     created_at: datetime | None
     updated_at: datetime | None
 
     def __init__(self, **k):
+        self.id = utils.parse_int(k, 'id')
         self.item_id = utils.parse_int(k, 'item_id')  # Item.id
         self.brand_id = utils.parse_int(k, 'brand_id')  # Company.id
         self.created_at = utils.parse_date(k, 'created_at')
